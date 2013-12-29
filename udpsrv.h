@@ -5,6 +5,7 @@ class UDPServer
 {
   public:
     UDPServer();
+    int RecvFrom(char *msg);
     int Recv(char *msg);
     void Send(char *msg);
     int m_sockfd;

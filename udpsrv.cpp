@@ -8,7 +8,7 @@
 #include <string.h>
 #include "udpsrv.h"
 #define BUFLEN 512
-#define PORT 9930
+#define PORT 3000 
 
 UDPServer::UDPServer()
 {
@@ -56,12 +56,18 @@ UDPServer::UDPServer()
 //  }
 }
 
-int UDPServer::Recv(char *msg)
+int UDPServer::RecvFrom(char *msg)
 {
   socklen_t slen=sizeof(m_incomingaddr);
   int ret = recvfrom(m_sockfd, msg, BUFLEN, 0, (struct sockaddr *)&m_incomingaddr, &slen); 
   return ret;
 };
+
+int UDPServer::Recv(char *msg)
+{
+  int ret = recv(m_sockfd, msg, BUFLEN, 0);
+  return ret;
+}
 
 void UDPServer::Send(char *msg)
 {
