@@ -1,40 +1,40 @@
 #ifndef ADAFRUIT_CC3000_UDP_SERVER_H
 #define ADAFRUIT_CC3000_UDP_SERVER_H
 
-#include "Adafruit_CC3000_UDP_Server.h"
-#include "Adafruit_CC3000_ClientRef.h"
 #include "Server.h"
 #include "utility/socket.h"
 
-#define MAX_SERVER_CLIENTS 3
+#define RXBUFFERSIZE 512 
 
 class Adafruit_CC3000_UDP_Server : public Server {
   public:
     Adafruit_CC3000_UDP_Server(uint16_t port);
+    
+    size_t write(uint8_t c);
 
-    Adafruit_CC3000_ClientRef available();
+    int16_t write(const void *buf, uint16_t len, uint32_t flags = 0);
 
-    virtual void begin();
+    int16_t write(const void *buf, uint16_t len, sockaddr address);
 
-    virtual size_t write(const uint8_t *buffer, size_t size);
+    int16_t read(void *buf, uint16_t len, uint32_t flags = 0);
 
-    virtual size_t write(uint8_t value);
+    int16_t read(void *buf, uint16_t len, sockaddr address);
 
-    int16_t receiveFrom(char *msg);
+    uint8_t read(void);
 
-    int16_t writeTo(char *msg);
+    int32_t close(void);
 
-    using Print::write;
+    uint8_t available(void);
+    
+    void begin(void);
+
+    uint8_t _rx_buf[RXBUFFERSIZE], _rx_buf_idx;
+    int16_t bufsiz;
 
   private:
-    Adafruit_CC3000_Client _client;
-
+    int16_t _socket;
     uint16_t _port;
-
-    uint16_t _listenSocket;
-
-    sockaddr_in _remoteAddress;
-
+    
 };
 
 #endif
